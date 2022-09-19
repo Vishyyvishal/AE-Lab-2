@@ -25,7 +25,12 @@ void decode_SUBS_RR(instr_t * const insn) {
 
 void execute_SUBS_RR(instr_t * const insn) {
     insn->val_ex.xval = insn->opnd1.xval - insn->opnd2.xval;
-
-    // TODO condition flags 
+    int64_t result = insn->opnd1.xval  - insn->opnd2.xval;
+    // condition flags 
+    bool n = (result < 0) ? 1 : 0;
+    bool z = (result == 0) ? 1 : 0;
+    bool c = (insn->opnd2.xval > insn->opnd1.xval && result > 0) ? 1 : 0;
+    bool v = (insn->opnd1.xval < 0 && insn->opnd2.xval >= 0 && result >= 0) || (insn->opnd1.xval >=0 && insn->opnd2.xval < 0 && result < 0) ? 1 : 0;
+    guest.proc->NZCV.bits->ccval == PACK_CC(n, z, c, v);
     return;
 }

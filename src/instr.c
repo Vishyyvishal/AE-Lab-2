@@ -106,9 +106,9 @@ void decode_instr(instr_t *const insn) {
         case OP_LSR: decode_UBFM(insn); break;
         case OP_UBFM: decode_UBFM(insn); break;
         case OP_ASR: decode_ASR(insn); break;
-        // case OP_B: decode_B(insn);break;
-        // case OP_B_COND: decode_B_COND(insn);break;
-        // case OP_BL: decode_BL(insn); break;
+        case OP_B: decode_B(insn); break;
+        case OP_B_COND: decode_B_COND(insn);break;
+        case OP_BL: decode_BL(insn); break;
         case OP_RET: decode_RET(insn); break;
         case OP_NOP: decode_NOP(insn); break;
         case OP_HLT: decode_HLT(insn); break;
@@ -145,9 +145,9 @@ void execute_instr(instr_t *const insn) {
         case OP_LSR: execute_LSR(insn); break;
         case OP_UBFM: execute_UBFM(insn); break;
         case OP_ASR: execute_ASR(insn); break;
-        // case OP_B: execute_B(insn); break;
-        // case OP_B_COND: execute_B_COND(insn); break;
-        // case OP_BL: execute_BL(insn); break;
+        case OP_B: execute_B(insn); break;
+        case OP_B_COND: execute_B_COND(insn); break;
+        case OP_BL: execute_BL(insn); break;
         case OP_RET: execute_RET(insn); break;
         case OP_NOP: execute_NOP(insn); break;
         case OP_HLT: execute_HLT(insn); break;
@@ -247,12 +247,16 @@ void update_pc_instr(instr_t *const insn) {
         case OP_ORR_RR: case OP_EOR_RR: case OP_ANDS_RR: 
         case OP_LSL: case OP_LSR: case OP_UBFM: case OP_ASR: 
             update_pc_next(insn); break;
-        case OP_B: 
-            break;
+        case OP_B: update_pc_branch(insn); break;
         case OP_B_COND: 
+            if(insn->cond_holds) {
+                update_pc_branch(insn);
+            } else {
+                update_pc_next(insn);
+            }
+            insn->cond_holds;
             break;
-        case OP_BL: 
-            break;
+        case OP_BL: update_pc_branch(insn); break;
         case OP_RET: update_pc_branch(insn); break;
         case OP_NOP: update_pc_next(insn); break;
         case OP_HLT: update_pc_halt(insn); break;

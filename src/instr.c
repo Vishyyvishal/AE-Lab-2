@@ -75,12 +75,12 @@ void fetch_instr(instr_t *const insn) {
 
 /*
  * Decode and read operands: top level dispatcher (partially implemented).
- *
+ * 
  * STUDENT TODO:
  * Finish dispatcher.
  * Finish lower levels in instruction-specific files in the instr/ subdirectory.
  */
-
+// TODO DO THIS MOFO
 void decode_instr(instr_t *const insn) {
     // Don't change the next three lines.
     int32_t instr = insn->insnbits;
@@ -90,26 +90,26 @@ void decode_instr(instr_t *const insn) {
     switch(insn->op) {
         case OP_NONE: assert(false); break;
         case OP_LDURB: decode_LDURB(insn); break;
-        case OP_LDUR: break;
+        case OP_LDUR: decode_LDUR(insn); break;
         case OP_STURB: decode_STURB(insn); break;
-        case OP_STUR: break;
-        case OP_MOVK: break;
-        case OP_MOVZ: break;
+        case OP_STUR: decode_STUR(insn); break;
+        case OP_MOVK: decode_MOVK(insn); break;
+        case OP_MOVZ: decode_MOVZ(insn); break;
         case OP_ADD_RI: decode_ADD_RI(insn); break;
-        case OP_ADDS_RR: break;
-        case OP_SUBS_RR: break;
-        case OP_MVN: break;
-        case OP_ORR_RR: break;
-        case OP_EOR_RR: break;
-        case OP_ANDS_RR: break;
-        case OP_LSL: break;
-        case OP_LSR: break;
-        case OP_UBFM: break;
-        case OP_ASR: break;
-        case OP_B: break;
-        case OP_B_COND: break;
-        case OP_BL: break;
-        case OP_RET: break;
+        case OP_ADDS_RR: decode_ADDS_RR(insn); break;
+        case OP_SUBS_RR: decode_SUBS_RR(insn); break;
+        case OP_MVN: decode_MVN(insn); break;
+        case OP_ORR_RR: decode_ORR_RR(insn); break;
+        case OP_EOR_RR: decode_EOR_RR(insn); break;
+        case OP_ANDS_RR: decode_ANDS_RR(insn); break;
+        case OP_LSL: decode_UBFM(insn); break;
+        case OP_LSR: decode_UBFM(insn); break;
+        case OP_UBFM: decode_UBFM(insn); break;
+        // case OP_ASR: decode_ASR(insn) break;
+        // case OP_B: break;
+        // case OP_B_COND: break;
+        // case OP_BL: break;
+        case OP_RET: decode_RET(insn); break;
         case OP_NOP: decode_NOP(insn); break;
         case OP_HLT: decode_HLT(insn); break;
         case OP_ERROR: assert(false); break;
@@ -129,26 +129,26 @@ void execute_instr(instr_t *const insn) {
     switch(insn->op) {
         case OP_NONE: assert(false); break;
         case OP_LDURB: execute_LDURB(insn); break;
-        case OP_LDUR: break;
+        case OP_LDUR: execute_LDUR(insn); break;
         case OP_STURB: execute_STURB(insn); break;
-        case OP_STUR: break;
-        case OP_MOVK: break;
-        case OP_MOVZ: break;
+        case OP_STUR: execute_STUR(insn); break;
+        case OP_MOVK: execute_MOVK(insn); break;
+        case OP_MOVZ: execute_MOVZ(insn) ;break;
         case OP_ADD_RI: execute_ADD_RI(insn); break;
-        case OP_ADDS_RR: break;
-        case OP_SUBS_RR: break;
-        case OP_MVN: break;
-        case OP_ORR_RR: break;
-        case OP_EOR_RR: break;
-        case OP_ANDS_RR: break;
-        case OP_LSL: break;
-        case OP_LSR: break;
-        case OP_UBFM: break;
-        case OP_ASR: break;
-        case OP_B: break;
-        case OP_B_COND: break;
-        case OP_BL: break;
-        case OP_RET: break;
+        case OP_ADDS_RR: execute_ADDS_RR(insn); break;
+        case OP_SUBS_RR: execute_SUBS_RR(insn); break;
+        case OP_MVN: execute_MVN(insn); break;
+        case OP_ORR_RR: execute_ORR_RR(insn); break;
+        case OP_EOR_RR: execute_EOR_RR(insn); break;
+        case OP_ANDS_RR: execute_ANDS_RR(insn); break;
+        case OP_LSL: execute_LSL(insn); break;
+        case OP_LSR: execute_LSR(insn); break;
+        case OP_UBFM: execute_UBFM(insn); break;
+        // case OP_ASR: break;
+        // case OP_B: break;
+        // case OP_B_COND: break;
+        // case OP_BL: break;
+        case OP_RET: execute_RET(insn); break;
         case OP_NOP: execute_NOP(insn); break;
         case OP_HLT: execute_HLT(insn); break;
         case OP_ERROR: assert(false); break;
@@ -167,9 +167,9 @@ void memory_instr(instr_t *const insn) {
     switch(insn->op) {
         case OP_NONE: assert(false); break;
         case OP_LDURB: common_memory_load_BW(insn); break;
-        case OP_LDUR: break;
+        case OP_LDUR: common_memory_load_LX(insn); break;
         case OP_STURB: common_memory_store_WB(insn); break;
-        case OP_STUR: break;
+        case OP_STUR: common_memory_store_XL(insn); break;
         case OP_MOVK: break;
         case OP_MOVZ: break;
         case OP_ADD_RI: common_memory_none(insn); break;
@@ -205,11 +205,9 @@ void wback_instr(instr_t *const insn) {
     switch(insn->op) {
         case OP_NONE: assert(false); break;
         case OP_LDURB: common_writeback_mem_W(insn); break;
-        case OP_LDUR: 
-            break;
+        case OP_LDUR: common_writeback_mem_W(insn); break;
         case OP_STURB: case OP_STUR: common_writeback_none(insn); break;
-        case OP_MOVK: case OP_MOVZ: 
-            break;
+        case OP_MOVK: case OP_MOVZ: common_writeback_alu_X(insn); break;
         case OP_ADD_RI:
         case OP_ADDS_RR: 
         case OP_SUBS_RR: 

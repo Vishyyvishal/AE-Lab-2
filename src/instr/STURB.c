@@ -20,12 +20,12 @@ void decode_STURB(instr_t * const insn) {
     insn->imm = offset;
     insn->opnd1.xval = insn->src1->bits->xval;
     insn->opnd2.xval = insn->imm;
-    if (31 == n) {
-        if (0 != insn->opnd1.xval) {
-            logging(LOG_FATAL, "Stack pointer misaligned");
-            exit(EXIT_FAILURE);
-        }
-    }
+    // if (31 == n) {
+    //     if (0 != insn->opnd1.xval) {
+    //         logging(LOG_FATAL, "Stack pointer misaligned");
+    //         exit(EXIT_FAILURE);
+    //     }
+    // }
     return;
 }
 

@@ -20,7 +20,8 @@ extern machine_t guest;
  * Do not re-write.
  */
 void update_pc_next(instr_t * const insn) {
-    guest.proc->PC.bits->xval = insn->next_PC;
+    // TODO check if this is right
+    guest.proc->PC.bits->xval += 4;
     return;
 }
 

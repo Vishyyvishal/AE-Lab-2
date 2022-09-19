@@ -13,7 +13,7 @@
 #include "ansicolors.h"
 
 static char default_ae_prompt[] = ANSI_BOLD ANSI_COLOR_BLUE "UTCS429-S2022-archsim>>> " ANSI_RESET;
-static const char author[] = ANSI_BOLD ANSI_COLOR_RED "REPLACE THIS WITH YOUR NAME AND UT EID" ANSI_RESET;
+static const char author[] = ANSI_BOLD ANSI_COLOR_RED "VISHAL RACHAPUDI VMR945" ANSI_RESET;
 
 static void print_init_msg(void) {
     time_t t;

@@ -253,8 +253,7 @@ void update_pc_instr(instr_t *const insn) {
             break;
         case OP_BL: 
             break;
-        case OP_RET: 
-            break;
+        case OP_RET: update_pc_branch(insn); break;
         case OP_NOP: update_pc_next(insn); break;
         case OP_HLT: update_pc_halt(insn); break;
         case OP_ERROR: assert(false); break;
